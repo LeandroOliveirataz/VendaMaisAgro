@@ -1,0 +1,44 @@
+{% extends "homepage.html" %}
+
+{% block titulo %}
+CARRINHO | VendaMaisAgromarket
+{% endblock %}
+
+{% block body %}
+{% include "navbar.html" %}
+
+<h1>Carrinho</h1>
+
+{% if itens_carrinho %}
+    <ul class="carrinho">
+        {% for item in itens_carrinho %}
+            <li>
+                <div class="produto">
+                    <img src="{{ url_for('static', filename=item.produto.imagem) }}" alt="{{ item.produto.titulo }}">
+                    <h2>{{ item.produto.titulo }}</h2>
+                    <p>Preço: R$ {{ item.produto.preco }}</p>
+                    <p>Quantidade: {{ item.quantidade }}</p>
+                    <form action="{{ url_for('remover_do_carrinho', id_produto=item.produto.id) }}" method="POST">
+                        <button type="submit">Remover</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="total">
+        <h2>Total:
+            {% set total = 0 %}
+            {% for item in itens_carrinho %}
+                {% set total = total + (item.produto.preco * item.quantidade) %}
+            {% endfor %}
+            R$ {{ total }}
+        </h2>
+        <a href="{{ url_for('checkout') }}" class="btn">Finalizar Compra</a>
+    </div>
+
+{% else %}
+    <p>Seu carrinho está vazio.</p>
+{% endif %}
+{% include "footer.html" %}
+{% endblock %}

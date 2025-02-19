@@ -1,0 +1,151 @@
+{% extends "homepage.html" %}
+
+{% block titulo %}
+PERFIL | {{ usuario.username }} | VendaMaisAgromarket
+{% endblock %}
+
+{% block body %}
+{% include "navbar.html" %}
+
+{% if form %}
+<div class="container">
+    <!-- Linha separadora e título -->
+    <div class="separator-container">
+        <h2 class="separator-title">{{ usuario.username }}, você está logado.</h2>
+        <hr class="separator-line" />
+    </div>
+
+    <!-- Botões em destaque -->
+    <div class="button-container">
+        <a class="botao-novo-produto" href="{{ url_for('produtos', id_usuario=current_user.id) }}">Cadastrar Novo Produto</a>
+        <a class="botao-novo-produto" href="{{ url_for('produtos', id_usuario=current_user.id) }}">Editar Produtos</a>
+    </div>
+
+    <!-- Modal para cadastrar novo produto -->
+    <div class="modal fade" id="novoProdutoModal" tabindex="-1" role="dialog" aria-labelledby="novoProdutoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="novoProdutoModalLabel">Cadastrar Novo Produto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="bloco-add-img" method="POST" enctype="multipart/form-data" action="{{ url_for('perfil', id_usuario=usuario.id) }}">
+                        {{ form.hidden_tag() }}
+
+                        <div>
+                            {{ form.titulo.label }} {{ form.titulo(size=30) }}
+                        </div>
+                        <div>
+                            {{ form.descricao.label }} {{ form.descricao(rows=3, cols=30) }}
+                        </div>
+                        <div>
+                            {{ form.preco.label }} {{ form.preco() }}
+                        </div>
+                        <div>
+                            {{ form.preco_minimo.label }} {{ form.preco_minimo() }}
+                        </div>
+                        <div>
+                            {{ form.quantidade.label }} {{ form.quantidade() }}
+                        </div>
+                        <div class="bloco-arquivo">
+                            <label for="imagem" class="botão-arquivo">
+                                Enviar Imagem:
+                                {{ form.imagem(class="input-arquivo", id="imagem") }}
+                            </label>
+                            <span id="imagem-arquivo" class=""></span>
+                        </div>
+
+                        {{ form.submit(class="botao-login") }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de navegação do perfil com novos estilos -->
+    <div class="nav-links-perfil">
+        {% if current_user.is_authenticated %}
+            <a class="botao-perfil" href="{{ url_for('perfil', id_usuario=current_user.id) }}">Meu Perfil</a>
+            <a class="botao-perfil" href="{{ url_for('carteira', id_usuario=current_user.id) }}">Carteira</a>
+            <a class="botao-perfil" href="{{ url_for('produtos', id_usuario=current_user.id) }}">Meus Produtos</a>
+            <a class="botao-perfil" href="{{ url_for('compras', id_usuario=current_user.id) }}">Minhas Compras</a>
+            <a class="botao-perfil" href="{{ url_for('vendas', id_usuario=current_user.id) }}">Minhas Vendas</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Quadrado com informações do usuário -->
+<div class="info-usuario">
+    <h3>Informações do Usuário</h3>
+    <p><strong>Nome:</strong> {{ usuario.username }}</p>
+    <p><strong>Email:</strong> {{ current_user.email }}</p>
+    <p><strong>CPF:</strong> {{ current_user.cpf }}</p>
+
+    <h3>Endereço Cadastrado</h3>
+    <p>
+        <strong>Rua:</strong> {{ current_user.endereco.rua if current_user.endereco else 'Não informado' }}
+        <strong>Número:</strong> {{ current_user.endereco.numero if current_user.endereco else 'Não informado' }}
+    </p>
+    <p><strong>Bairro:</strong> {{ current_user.endereco.bairro if current_user.endereco else 'Não informado' }}</p>
+    <p>
+        <strong>Cidade:</strong> {{ current_user.endereco.cidade if current_user.endereco else 'Não informado' }}
+        <strong>Estado:</strong> {{ current_user.endereco.estado if current_user.endereco else 'Não informado' }}
+    </p>
+    <p><strong>CEP:</strong> {{ current_user.endereco.cep if current_user.endereco else 'Não informado' }}</p>
+
+    <!-- Botão para editar endereço -->
+    <button type="button" class="botao-novo-produto" data-toggle="modal" data-target="#editarEnderecoModal">Editar Endereço</button>
+</div>
+
+<!-- Modal para editar endereço -->
+<div class="modal fade" id="editarEnderecoModal" tabindex="-1" role="dialog" aria-labelledby="editarEnderecoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarEnderecoModalLabel">Editar Endereço</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('editar_endereco', id_usuario=current_user.id) }}">
+                    {{ form_endereco.hidden_tag() }}
+
+                    <div>
+                        {{ form_endereco.rua.label }}
+                        {{ form_endereco.rua(size=30, value=current_user.endereco.rua if current_user.endereco else '') }}
+                    </div>
+                    <div>
+                        {{ form_endereco.numero.label }}
+                        {{ form_endereco.numero(size=30, value=current_user.endereco.numero if current_user.endereco else '') }}
+                    </div>
+                    <div>
+                        {{ form_endereco.bairro.label }}
+                        {{ form_endereco.bairro(size=30, value=current_user.endereco.bairro if current_user.endereco else '') }}
+                    </div>
+                    <div>
+                        {{ form_endereco.cidade.label }}
+                        {{ form_endereco.cidade(size=30, value=current_user.endereco.cidade if current_user.endereco else '') }}
+                    </div>
+                    <div>
+                        {{ form_endereco.estado.label }}
+                        {{ form_endereco.estado(size=30, value=current_user.endereco.estado if current_user.endereco else '') }}
+                    </div>
+                    <div>
+                        {{ form_endereco.cep.label }}
+                        {{ form_endereco.cep(size=30, value=current_user.endereco.cep if current_user.endereco else '') }}
+                    </div>
+
+                    {{ form_endereco.submit(class="botao-login") }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
+{% endblock %}

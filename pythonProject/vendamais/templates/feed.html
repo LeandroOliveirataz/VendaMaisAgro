@@ -1,0 +1,91 @@
+{% extends "homepage.html" %}
+
+{% block titulo %}
+FEED | VendaMaisAgromarket
+{% endblock %}
+
+{% block body %}
+{% include "navbar.html" %}
+
+<!-- Linha separadora e título -->
+<div class="separator-container">
+    <h2 class="separator-title">PRODUTOS</h2>
+    <hr class="separator-line" />
+</div>
+
+<div class="container">
+    <div class="postagens">
+        {% for produto in produtos %}
+        <div class="postagem" onclick="openModal('{{ produto.titulo }}', '{{ url_for('static', filename='fotos_posts/' + produto.imagem) }}', '{{ produto.descricao }}', {{ produto.id }})">
+            <img src="{{ url_for('static', filename='fotos_posts/{}'.format(produto.imagem)) }}" alt="Produto {{ produto.titulo }}" class="bloco-imagem" />
+            <p>{{ produto.descricao }}</p>
+            <h2>R$ {{ produto.preco }}</h2>
+            <button onclick="addToCart({{ produto.id }})">Adicionar ao Carrinho</button>
+            <button onclick="buyNow({{ produto.id }})">Comprar Agora</button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Modal para mostrar detalhes do produto -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-details">
+            <img id="modalProductImage" src="" alt="Produto" class="modal-product-image" />
+            <div class="modal-info">
+                <h2 id="modalProductTitle"></h2>
+                <p id="modalProductDescription"></p>
+                <div class="modal-actions">
+                    <button id="modalAddToCartButton" onclick="addToCart(currentProductId)">Adicionar ao Carrinho</button>
+                    <button id="modalBuyNowButton" onclick="buyNow(currentProductId)">Comprar Agora</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentProductId; // Variável para armazenar o ID do produto atual
+
+    function openModal(productTitle, productImage, productDescription, productId) {
+        currentProductId = productId; // Atualiza o ID do produto atual
+        document.getElementById("modalProductTitle").innerText = productTitle;
+        document.getElementById("modalProductImage").src = productImage;
+        document.getElementById("modalProductImage").style.maxWidth = "40%";
+        document.getElementById("modalProductDescription").innerText = productDescription;
+        document.getElementById("productModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("productModal").style.display = "none";
+    }
+
+    function addToCart(productId) {
+    fetch(`/adicionar_ao_carrinho/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Produto adicionado ao carrinho!");
+            closeModal(); // Você pode manter isso se quiser fechar após a adição
+        } else {
+            alert("Erro ao adicionar ao carrinho.");
+        }
+    })
+    .catch((error) => console.error('Erro:', error));
+}
+
+
+    function buyNow(productId) {
+        window.location.href = `/checkout?id_produto=${productId}`; // Passar ID do produto para a página de checkout
+    }
+</script>
+
+{% include "footer.html" %}
+{% endblock %}
