@@ -28,5 +28,14 @@ VendaMaisAgro é uma plataforma inovadora para facilitar a venda e compra de pro
 
 Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## Install
+## Instalação
 Veirifcar arquivo [INSTALL](https://github.com/LeandroOliveirataz/VendaMaisAgro/blob/main/INSTALL.md)
+
+## Uso
+Veirifcar arquivo [USAGE](https://github.com/LeandroOliveirataz/VendaMaisAgro/blob/main/USAGE.md)
+
+## Contribuição
+Veirifcar arquivo [CONTRIBUTING](https://github.com/LeandroOliveirataz/VendaMaisAgro/blob/main/CONTRIBUTING.md)
+
+## Registro de Alterações
+Veirifcar arquivo [CHANGELOG](https://github.com/LeandroOliveirataz/VendaMaisAgro/blob/main/CHANGELOG.md)
