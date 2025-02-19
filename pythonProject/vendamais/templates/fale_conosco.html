@@ -1,0 +1,61 @@
+{% extends "homepage.html" %}
+
+{% block titulo %}
+FALE CONOSCO | VendaMaisAgromarket
+{% endblock %}
+
+{% block body %}
+{% include "navbar.html" %}
+
+<div class="overflow-hidden">
+    <div class="container">
+        <img src="{{ url_for('static', filename='fotos_site/fundo-login.png') }}" class="bg-imagem-vendamais" />
+
+        <div class="container-popup">
+            <form method="POST" class="popup-first">
+                {{ form.csrf_token }}
+                <h2 align="center">Fale Conosco</h2>
+
+                <div>
+                    <label for="nome"></label>
+                    {{ form.nome(id='nome', size=38) }}
+                </div>
+
+                <div>
+                    <label for="email"></label>
+                    {{ form.email(id='email', size=38) }}
+                </div>
+
+                <div>
+    <label for="telefone"></label>
+    {{ form.telefone(id='telefone', size=38) }} <!-- tamanho do campo em número de caracteres -->
+</div>
+
+                <div>
+    <label for="mensagem"></label>
+    {{ form.mensagem(id='mensagem', class='campo-mensagem') }}
+</div>
+
+                <div class="div-botao">
+                    <button type="submit" class="botao-faleconosco">Enviar</button>
+                    <a href="{{ url_for('homepage') }}" class="link-sair">Fechar</a>
+                </div>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <ul class="flash-messages">
+                            {% for category, message in messages %}
+                                <li class="{{ category }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </form>
+
+            <!-- Botão para voltar para a homepage -->
+            <a href="{{ url_for('homepage') }}" class="btn btn-home">Voltar para Home</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

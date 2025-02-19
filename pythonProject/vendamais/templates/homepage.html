@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>{% block titulo %}Venda + Agromarket{% endblock %}</title>
+  </head>
+
+  {% block body %}
+  <body>
+    <div id="cep-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Insira seu CEP</h2>
+        <input type="text" id="cep-input" placeholder="Digite seu CEP">
+        <button id="submit-cep">Enviar</button>
+      </div>
+    </div>
+
+    <div class="container">
+      {% include "navbar.html" %}
+    </div>
+
+    <section class="banner">
+      <img src="{{ url_for('static', filename='fotos_site/fundo-login.png') }}" class="bg-imagem-vendamais" alt="Imagem de fundo" />
+    </section>
+
+
+
+<!-- Linha separadora e título -->
+<div class="separator-container">
+    <h2 class="separator-title">ÚLTIMOS PRODUTOS ADICIONADOS</h2> <!-- Remover text-align aqui -->
+    <hr class="separator-line" />
+</div>
+              <div class="conteudo">
+        {% for produto in produtos %}
+        <a href="{{ url_for('perfil', id_usuario=produto.id_usuario) }}" class="bloco-imagem">
+            <img src="{{ url_for('static', filename='fotos_posts/{}'.format(produto.imagem)) }}" alt="Produto {{ produto.titulo }}" />
+
+            <div class="description">
+            <h2>R$ {{ produto.preco }}</h2>
+            <p>{{ produto.descricao }}</p>
+          </div>
+          <div class="price">
+            <p>R$ {{ produto.preco_minimo }}</p>
+           <p><button id="adicionar_carrinho">Adicionar ao carrinho</button></p>
+              <p><button id="adicionar_carrinho">Comprar agora</button></p>
+          </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    {% include "footer.html" %}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+  {% endblock %}
+<!-- jQuery e Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</html>

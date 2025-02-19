@@ -1,0 +1,86 @@
+{% extends "homepage.html" %}
+
+{% block titulo %}
+CARTEIRA | {{ usuario.username }} | VendaMaisAgromarket
+{% endblock %}
+
+{% block body %}
+{% include "navbar.html" %}
+
+<div class="container">
+    <div class="separator-container">
+        <h2 class="separator-title">{{ usuario.username }}, você está logado.</h2>
+        <hr class="separator-line" />
+    </div>
+
+    <div class="button-container">
+        <a class="botao-novo-produto" href="#" data-toggle="modal" data-target="#novoPagamentoModal">Cadastrar Nova Forma de Pagamento</a>
+        <a class="botao-novo-produto" href="{{ url_for('produtos', id_usuario=current_user.id) }}">Editar Produtos</a>
+    </div>
+
+    <div class="nav-links-perfil">
+        {% if current_user.is_authenticated %}
+            <a class="botao-perfil" href="{{ url_for('perfil', id_usuario=current_user.id) }}">Meu Perfil</a>
+            <a class="botao-perfil" href="{{ url_for('carteira', id_usuario=current_user.id) }}">Carteira</a>
+            <a class="botao-perfil" href="{{ url_for('produtos', id_usuario=current_user.id) }}">Meus Produtos</a>
+            <a class="botao-perfil" href="{{ url_for('compras', id_usuario=current_user.id) }}">Minhas Compras</a>
+            <a class="botao-perfil" href="{{ url_for('vendas', id_usuario=current_user.id) }}">Minhas Vendas</a>
+        {% endif %}
+    </div>
+
+    <div class="modal fade" id="novoPagamentoModal" tabindex="-1" role="dialog" aria-labelledby="novoPagamentoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="novoPagamentoModalLabel">Cadastrar Forma de Pagamento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" enctype="multipart/form-data" action="{{ url_for('cadastrar_pagamento', id_usuario=current_user.id) }}">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form.tipo_pagamento.label }}  <!-- Renderiza o label do SelectField -->
+                            {{ form.tipo_pagamento(class="form-control") }}  <!-- Renderiza o SelectField -->
+                        </div>
+                        <div class="form-group">
+                            {{ form.numero_cartao.label }}
+                            {{ form.numero_cartao(class="form-control", placeholder="Digite o número do cartão") }}  <!-- Renderiza o campo de texto -->
+                        </div>
+                        <div class="form-group">
+                            {{ form.validade_cartao.label }}
+                            {{ form.validade_cartao(class="form-control", placeholder="MM/AA") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.codigo_seguranca.label }}
+                            {{ form.codigo_seguranca(class="form-control", placeholder="Código de segurança") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.titular_cartao.label }}
+                            {{ form.titular_cartao(class="form-control", placeholder="Nome como no cartão") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.imagem.label }}
+                            {{ form.imagem(class="input-arquivo", style="display:none;") }}
+                            <button type="button" class="botao-arquivo" onclick="document.getElementById('imagem').click();">Selecionar Comprovante</button>
+                            <span id="imagem-arquivo" class=""></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">{{ form.submit() }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-usuario">
+        <h3>Formas de Pagamentos Cadastradas</h3>
+        <p><strong>Cartão:</strong> {{ usuario.username }}</p>
+        <p><strong>Pix: </strong> {{ current_user.email }}</p>
+        <p><strong>Boleto Bancário:</strong> {{ current_user.cpf }}</p>
+    </div>
+</div>
+
+{% include "footer.html" %}
+{% endblock %}

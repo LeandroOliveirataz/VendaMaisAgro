@@ -1,0 +1,54 @@
+</div>
+    <form class="bloco-add-img" method="POST" enctype="multipart/form-data" action="{{ url_for('perfil', id_usuario=usuario.id) }}">
+        {{ form.hidden_tag() }}
+
+        <h2>Cadastrar Novo Produto</h2>
+        <div>
+            {{ form.titulo.label }} {{ form.titulo(size=30) }}
+        </div>
+        <div>
+            {{ form.descricao.label }} {{ form.descricao(rows=3, cols=30) }}
+        </div>
+        <div>
+            {{ form.preco.label }} {{ form.preco() }}
+        </div>
+        <div>
+            {{ form.preco_minimo.label }} {{ form.preco_minimo() }}
+        </div>
+        <div>
+            {{ form.quantidade.label }} {{ form.quantidade() }}
+        </div>
+        <div class="bloco-arquivo">
+            <label for="imagem" class="botão-arquivo">
+                Enviar Imagem:
+                {{ form.imagem(class="input-arquivo", id="imagem") }}
+            </label>
+            <span id="imagem-arquivo" class=""></span>
+        </div>
+
+        {{ form.submit(class="botao-login") }}
+    </form>
+</div>
+{% else %}
+<div class="bloco-add-img">
+    <h2>{{ usuario.username }} - Ver Perfil</h2>
+</div>
+{% endif %}
+
+<div class="conteudo">
+    {% for produto in usuario.produtos %}
+        <div class="bloco-imagem">
+            <h3>{{ produto.titulo }}</h3>
+            <img src="{{ url_for('static', filename='fotos_posts/{}'.format(produto.imagem)) }}" alt="Foto de {{ produto.titulo }}" />
+            <p>{{ produto.descricao }}</p>
+            <p>Preço: {{ produto.preco }}</p>
+            <p>Quantidade: {{ produto.quantidade }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+{% for mensagem in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ mensagem[0] }}">
+        {{ mensagem[1] }}
+    </div>
+{% endfor %}
