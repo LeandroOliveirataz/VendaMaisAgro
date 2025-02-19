@@ -2,12 +2,6 @@
 
 VendaMaisAgro é uma plataforma inovadora para facilitar a venda e compra de produtos agrícolas, diminuindo distãncias e conectando produtores diretamente aos comerciantes. Através desta plataforma, agricultores podem listar seus produtos e compradores podem facilmente encontrar e adquirir produtos frescos diretamente da fonte.
 
-## Imagens
-
-![Texto Alternativo]("https://drive.google.com/file/d/1bpUWi0NS0-vf6BafrmijjXHoWbWQU-JB/view?usp=drive_link")
-<img src=https://drive.google.com/file/d/1bpUWi0NS0-vf6BafrmijjXHoWbWQU-JB/view?usp=drive_link>
-
-
 ## Funcionalidades
 
 - Listagem de produtos agrícolas
