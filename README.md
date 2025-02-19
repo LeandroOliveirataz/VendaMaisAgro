@@ -24,10 +24,6 @@ VendaMaisAgro é uma plataforma inovadora para facilitar a venda e compra de pro
 - MongoDB
 - Conta na AWS para serviços de hospedagem
 
-## Licença
-
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
 ## Instalação
 Veirifcar arquivo [INSTALL](https://github.com/LeandroOliveirataz/VendaMaisAgro/blob/main/INSTALL.md)
 
